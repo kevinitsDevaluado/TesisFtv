@@ -1,0 +1,45 @@
+{% extends 'list.html' %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static 'lib/select2-4.0.13/js/select2.min.js' %}"></script>
+    <script src="{% static 'lib/select2-4.0.13/js/i18n/es.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/select2-4.0.13/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/select2-4.0.13/css/select2-bootstrap4.min.css' %}">
+    <script src="{% static 'historialmedical/client/js/list.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="card {{ dshboard.card }}">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-search"></i>
+                {{ title }}
+            </h3>
+            <div class="card-tools">
+                <small>Su último acceso al sistema fue el {{ request.user.last_login }}</small>
+            </div>
+        </div>
+        <div class="card-body" style="display: block;">
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="form-group">
+                        <label>Vehículo:</label>
+                        {{ form.mascots }}
+                    </div>
+                </div>
+                <div class="col-lg-3" hidden="true">
+                    <div class="form-group">
+                        <label>Tipo:</label>
+                        {{ form.type_medicalhistory }}
+                    </div>
+                </div>
+            </div>
+            <div class="timeline">
+
+            </div>
+        </div>
+        <div class="card-footer">
+
+        </div>
+    </div>
+{% endblock %}

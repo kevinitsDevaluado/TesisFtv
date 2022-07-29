@@ -1,0 +1,28 @@
+{% extends 'skin.html' %}
+{% load static %}
+{% load security_extras %}
+{% load widget_tweaks %}
+{% block section_content %}
+    <div class="content-wrapper">
+        <section class="content-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="{% url 'dashboard' %}"><i class="fas fa-home"></i> Panel de administración</a>
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="container">
+            <section class="content">
+
+            </section>
+        </div>
+    </div>
+{% endblock %}

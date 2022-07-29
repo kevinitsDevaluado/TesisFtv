@@ -1,0 +1,49 @@
+<!-- ======= Footer ======= -->
+<footer id="footer">
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-4 col-md-6 footer-contact mx-auto">
+                    <h3>{{ mainpage.name }}</h3>
+                    <p class="text-justify">
+                        {{ mainpage.desc }}
+                    </p>
+                </div>
+
+                <div class="col-lg-4 col-md-6 footer-links mx-auto">
+                    <h4>Contactos</h4>
+                    <ul>
+                        <li><i class="far fa-clock"></i> <a href="#"> <b>Horario: </b> {{ mainpage.horary }}</a>
+                        </li>
+                        <li><i class="fas fa-phone-volume"></i> <a href="#"> <b>Teléfono: </b> {{ mainpage.phone }}
+                            /
+                            +593{{ mainpage.mobile }}</a></li>
+                        <li><i class="fas fa-envelope"></i> <a href="#"> <b>Email: </b> {{ mainpage.email }}</a>
+                        </li>
+                        <li><i class="fas fa-street-view"></i> <a href="#">
+                            <b>Dirección: </b> {{ mainpage.address }}
+                        </a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="container py-4">
+        <div class="mr-md-auto text-center mb-1">
+            <div class="copyright">
+                &copy; Copyright <strong><span>{{ mainpage.name }}</span></strong>. Todos los derechos reservados
+            </div>
+            <div class="credits">
+                Diseñada por <a href="">Alexander TIpan</a>
+            </div>
+        </div>
+        <div class="social-links text-center pt-3 pt-md-0">
+            {% for s in socialnetworks %}
+                <a href="{{ s.url }}" class="{{ s.css }}"><i class="{{ s.icon }}"></i></a>
+            {% endfor %}
+        </div>
+    </div>
+</footer>
+<!-- End Footer -->

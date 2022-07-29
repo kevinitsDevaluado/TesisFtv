@@ -1,0 +1,409 @@
+{% extends 'skin.html' %}
+{% load static %}
+{% block head %}
+    <script src="{% static 'lib/highcharts-9.1.1/highcharts.js' %}"></script>
+    <script src="{% static 'lib/highcharts-9.1.1/modules/exporting.js' %}"></script>
+    <script src="{% static 'lib/highcharts-9.1.1/modules/export-data.js' %}"></script>
+    <script src="{% static 'lib/highcharts-9.1.1/modules/accessibility.js' %}"></script>
+{% endblock %}
+{% block breadcrumb %}
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        {% if request.user.get_group_id_session != 2 %}
+            <div class="row">
+                <div class="col-md-3 col-sm-6 col-12">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
+                        <div class="info-box-content">
+                        <span class="info-box-text">
+                            Clientes
+                        </span>
+                            <span class="info-box-number">
+                            {{ clients }}
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-12">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-success"><i class="far fa-flag"></i></span>
+                        <div class="info-box-content">
+                        <span class="info-box-text">
+                            Proveedores
+                        </span>
+                            <span class="info-box-number">
+                            {{ provider }}
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-12">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
+                        <div class="info-box-content">
+                        <span class="info-box-text">
+                            Productos
+                        </span>
+                            <span class="info-box-number">
+                            {{ products }}
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-12">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-danger"><i class="fas fa-car"></i></span>
+                        <div class="info-box-content">
+                        <span class="info-box-text">
+                            Vehiculo
+                        </span>
+                            <span class="info-box-number">
+                            {{ mascots }}
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div id="graph-soldproducts"></div>
+                    <script type="application/javascript">
+                        var graphsoldproducts = Highcharts.chart('graph-soldproducts', {
+                            chart: {
+                                plotBackgroundColor: null,
+                                plotBorderWidth: null,
+                                plotShadow: false,
+                                type: 'pie'
+                            },
+                            title: {
+                                text: 'Productos mas vendidos del mes de {{ month }} del año {{ datenow.year }}'
+                            },
+                            tooltip: {
+                                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                            },
+                            accessibility: {
+                                point: {
+                                    valueSuffix: '%'
+                                }
+                            },
+                            plotOptions: {
+                                pie: {
+                                    allowPointSelect: true,
+                                    cursor: 'pointer',
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                                    }
+                                }
+                            },
+                        });
+
+                        function get_graph_sales_products_year_month() {
+                            $.ajax({
+                                url: pathname,
+                                data: {
+                                    'action': 'get_graph_sales_products_year_month'
+                                },
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRFToken': csrftoken
+                                },
+                                dataType: 'json',
+                                success: function (request) {
+                                    if (!request.hasOwnProperty('error')) {
+                                        graphsoldproducts.addSeries(request);
+                                        return false;
+                                    }
+                                    message_error(request.error);
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    message_error(errorThrown + ' ' + textStatus);
+                                }
+                            });
+                        }
+
+                        $(function () {
+                            get_graph_sales_products_year_month();
+                        });
+
+                    </script>
+                </div>
+                <div class="col-lg-6">
+                    <div id="graph-salescategory"></div>
+                    <script type="application/javascript">
+                        var graphsalescategory = Highcharts.chart('graph-salescategory', {
+                            chart: {
+                                plotBackgroundColor: null,
+                                plotBorderWidth: null,
+                                plotShadow: false,
+                                type: 'pie'
+                            },
+                            title: {
+                                text: 'Ventas por categoría del mes de {{ month }} del año {{ datenow.year }}'
+                            },
+                            tooltip: {
+                                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                            },
+                            accessibility: {
+                                point: {
+                                    valueSuffix: '%'
+                                }
+                            },
+                            plotOptions: {
+                                pie: {
+                                    allowPointSelect: true,
+                                    cursor: 'pointer',
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                                    }
+                                }
+                            },
+                        });
+
+                        function get_graph_sales_category() {
+                            $.ajax({
+                                url: pathname,
+                                data: {
+                                    'action': 'get_graph_sales_category'
+                                },
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRFToken': csrftoken
+                                },
+                                dataType: 'json',
+                                success: function (request) {
+                                    if (!request.hasOwnProperty('error')) {
+                                        graphsalescategory.addSeries(request);
+                                        return false;
+                                    }
+                                    message_error(request.error);
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    message_error(errorThrown + ' ' + textStatus);
+                                }
+                            });
+                        }
+
+                        $(function () {
+                            get_graph_sales_category();
+                        });
+
+                    </script>
+                </div>
+            </div>
+            <div class="row mt-2 pb-4">
+                <div class="col-lg-12">
+                    <div id="graph-salesyear"></div>
+                    <script type="application/javascript">
+                        var graphsalesyear = Highcharts.chart('graph-salesyear', {
+                            chart: {
+                                type: 'column'
+                            },
+                            title: {
+                                text: 'Reporte de ventas del año {{ datenow.year }}'
+                            },
+                            subtitle: {
+                                text: 'Reporte de columnas'
+                            },
+                            xAxis: {
+                                categories: [
+                                    'Enero',
+                                    'Febrero',
+                                    'Marzo',
+                                    'Abril',
+                                    'Mayo',
+                                    'Junio',
+                                    'Julio',
+                                    'Agosto',
+                                    'Septiembre',
+                                    'Octubre',
+                                    'Noviembre',
+                                    'Diciembre'
+                                ],
+                                crosshair: true
+                            },
+                            yAxis: {
+                                min: 0,
+                                title: {
+                                    text: 'Valores $'
+                                }
+                            },
+                            tooltip: {
+                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                                    '<td style="padding:0"><b>{point.y:.1f} $</b></td></tr>',
+                                footerFormat: '</table>',
+                                shared: true,
+                                useHTML: true
+                            },
+                            plotOptions: {
+                                column: {
+                                    pointPadding: 0.2,
+                                    borderWidth: 0
+                                }
+                            },
+                        });
+
+                        function get_graph_sales_year_month() {
+                            $.ajax({
+                                url: pathname,
+                                data: {
+                                    'action': 'get_graph_sales_year_month'
+                                },
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRFToken': csrftoken
+                                },
+                                dataType: 'json',
+                                success: function (request) {
+                                    if (!request.hasOwnProperty('error')) {
+                                        graphsalesyear.addSeries(request);
+                                        return false;
+                                    }
+                                    message_error(request.error);
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    message_error(errorThrown + ' ' + textStatus);
+                                }
+                            });
+                        }
+
+                        $(function () {
+                            get_graph_sales_year_month();
+                        });
+                    </script>
+                </div>
+            </div>
+        {% else %}
+            <div class="card card-widget widget-user">
+                <div class="widget-user-header bg-blue">
+                    <h3 class="widget-user-username">
+                        {{ mainpage.name }} ! Te da la bienvenida {{ request.user.get_full_name }}
+                    </h3>
+                    <h5 class="widget-user-desc">
+                        Su último acceso fue {{ request.user.last_login }}
+                    </h5>
+                </div>
+                <div class="widget-user-image">
+                    <img class="img-circle elevation-2" src="{{ request.user.get_image }}" alt="User Avatar">
+                </div>
+                <div class="card-footer" style="background-color: white;">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <img src="{% static 'img/default/corazonserrano.jpeg' %}" style="width: 50%;"
+                                 class="img-fluid d-block mx-auto mb-2">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 border-right">
+                            <div class="description-block">
+                                <i class="fas fa-phone-volume fa-2x"></i>
+                                <h5 class="description-header">
+                                    Comunicate con nosotros
+                                </h5>
+                                <span class="description-text">
+                                {{ mainpage.phone }} / {{ mainpage.mobile }}
+                            </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 border-right">
+                            <div class="description-block">
+                                <i class="fas fa-envelope fa-2x"></i>
+                                <h5 class="description-header">
+                                    Escribenos
+                                </h5>
+                                <span class="description-text">
+                                {{ mainpage.email }}
+                            </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 border-right">
+                            <div class="description-block">
+                                <i class="fas fa-street-view fa-2x"></i>
+                                <h5 class="description-header">
+                                    Dirección
+                                </h5>
+                                <span class="description-text">
+                                {{ mainpage.address }}
+                            </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="description-block">
+                                <i class="fas fa-thumbs-up fa-2x"></i>
+                                <h5 class="description-header">
+                                    Siguenos en nuestra redes sociales
+                                </h5>
+                                <span class="description-text">
+                            {% for s in socialnetworks %}
+                                <a href="{{ s.url }}" target="_blank" class="btn bg-dark btn-xs btn-flat"><i
+                                        class="{{ s.icon }}"></i></a>
+                            {% endfor %}
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-widget">
+                <div class="card-header">
+                    <div class="user-block">
+                        <img class="img-circle" src="{% static 'img/default/noticias.png' %}" alt="User Image">
+                        <span class="username"><a href="#">Zona de noticias</a></span>
+                        <span class="description">{{ date_joined }}</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            {% for n in news %}
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="card">
+                                        <img class="card-img-top" src="{{ n.get_image }}" alt="Card image cap">
+                                        <div class="card-body">
+                                            <h5 class="card-title title-notice">{{ n.title }}</h5>
+                                            <p class="card-text">
+                                                {{ n.trim_desc }}...
+                                            </p>
+                                        </div>
+                                        <div class="card-footer">
+                                            <a href="{{ n.url }}" target="_blank" class="btn btn-primary btn-block">
+                                                <i class="fas fa-rss-square"></i> Leer más
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-widget">
+                <div class="card-header">
+                    <div class="user-block">
+                        <img class="img-circle" src="{% static 'img/default/videos.png' %}" alt="User Image">
+                        <span class="username"><a href="#">Zona de videos</a></span>
+                        <span class="description">{{ date_joined }}</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            {% for v in videos %}
+                                <div class="col-lg-3 col-md-6">
+                                    <iframe width="100%" height="302" src="{{ v.url }}" frameborder="0"
+                                            allow="autoplay; encrypted-media" allowfullscreen
+                                            style="margin-top:15px;">
+                                    </iframe>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

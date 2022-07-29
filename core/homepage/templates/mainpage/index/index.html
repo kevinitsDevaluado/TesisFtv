@@ -1,0 +1,583 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>{{ title }}</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicons -->
+    <link href="{{ mainpage.get_icon_image }}" rel="icon">
+    <link href="{{ mainpage.get_icon_image }}" rel="apple-touch-icon">
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&family=Ubuntu:wght@400;500&display=swap" rel="stylesheet"> 
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="{% static 'lib/fontawesome-5.15.3/css/all.min.css' %}"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+
+    <!-- Libraries Stylesheet -->
+    <link href="{% static 'index/lib/animate/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'index/lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'index/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{% static 'index/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{% static 'index/css/style.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Topbar Start -->
+    <div class="container-fluid bg-light p-0">
+        <div class="row gx-0 d-none d-lg-flex">
+            <div class="col-lg-7 px-5 text-start">
+                <div class="h-100 d-inline-flex align-items-center py-3 me-4">
+                    <small class="fa fa-map-marker-alt text-primary me-2"></small>
+                    <small>{{ mainpage.address }}</small>
+                </div>
+                <div class="h-100 d-inline-flex align-items-center py-3">
+                    <small class="far fa-clock text-primary me-2"></small>
+                    <small>{{ mainpage.horary }}</small>
+                </div>
+            </div>
+            <div class="col-lg-5 px-5 text-end">
+                <div class="h-100 d-inline-flex align-items-center py-3 me-4">
+                    <small class="fa fa-phone-alt text-primary me-2"></small>
+                    <small>+593 {{ mainpage.mobile }} / {{ mainpage.phone }}</small>
+                </div>
+                <div class="h-100 d-inline-flex align-items-center">
+                    <!--REDES SOCIALES-->
+                    {% for i in redes %}
+                        <a class="btn btn-sm-square bg-white text-primary me-1" href=" {{ i.url }} "><i class=" {{ i.icon }} "></i></a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Topbar End -->
+
+
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+        <a href="{% url 'index' %}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+            <h2 class="m-0 text-primary"><i class="fa fa-car me-3"></i>{{ mainpage.name }}</h2>
+        </a>
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a href="{% url 'index' %}" class="nav-item nav-link active">Inicio</a>
+                <a href="{% if onepage %}#about{% else %}/#about{% endif %}" class="nav-item nav-link">Nosotros</a>
+                <a href="{% if onepage %}#servicios{% else %}/#servicios{% endif %}" class="nav-item nav-link">Servicios</a>
+                <a href="{% if onepage %}#team{% else %}/#team{% endif %}" class="nav-item nav-link">Team</a>
+                <a href="{% if onepage %}#contactos{% else %}/#contactos{% endif %}" class="nav-item nav-link">Contactos</a>
+                <a href="{% url 'signin' %}" class="nav-item nav-link">Registrate</a>
+               
+
+                {% if request.user.is_superuser %}
+                <a href="{% url 'dashboard' %}" class="nav-item nav-link">Bienvenido<i class="fa fa-arrow-right ms-3"></i></a>
+                {% else %}
+                <a href="{% url 'login' %}" class="nav-item nav-link">Iniciar sesión<i class="fa fa-arrow-right ms-3"></i></a>
+                {% endif %}
+            </div>
+        
+        </div>
+    </nav>
+    <!-- Navbar End -->
+
+
+    <!-- Carousel Start -->
+    <div class="container-fluid p-0 mb-5">
+        <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="w-100" src="{% static 'index/img/carousel-bg-1.jpg' %}" alt="Image">
+                    <div class="carousel-caption d-flex align-items-center">
+                        <div class="container">
+                            <div class="row align-items-center justify-content-center justify-content-lg-start">
+                                <div class="col-10 col-lg-7 text-center text-lg-start">
+                                    <h6 class="text-white text-uppercase mb-3 animated slideInDown">// Servicio técnico de automóviles //</h6>
+                                    <h1 class="display-3 text-white mb-4 pb-3 animated slideInDown">Centro calificado en mantenimiento preventivo automotriz  </h1>
+                                </div>
+                                <div class="col-lg-5 d-none d-lg-flex animated zoomIn">
+                                    <img class="img-fluid" src="{% static 'index/img/carousel-1.png' %}" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img class="w-100" src="{% static 'index/img/carousel-bg-2.jpg' %}" alt="Image">
+                    <div class="carousel-caption d-flex align-items-center">
+                        <div class="container">
+                            <div class="row align-items-center justify-content-center justify-content-lg-start">
+                                <div class="col-10 col-lg-7 text-center text-lg-start">
+                                    <h6 class="text-white text-uppercase mb-3 animated slideInDown">//  Mantenimiento de automóviles //</h6>
+                                    <h1 class="display-3 text-white mb-4 pb-3 animated slideInDown">Centro calificado de servicio de lavado de vehículos, encerada, pulida, protector cerámico</h1>
+                                </div>
+                                <div class="col-lg-5 d-none d-lg-flex animated zoomIn">
+                                    <img class="img-fluid" src="{% static 'index/img/carousel-2.png' %}" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#header-carousel"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    <!-- Carousel End -->
+
+
+    <!-- Service Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="d-flex py-5 px-4">
+                        <i class="fa fa-certificate fa-3x text-primary flex-shrink-0"></i>
+                        <div class="ps-4">
+                            <h5 class="mb-3">Servicio de Calidad</h5>
+                            <p>Extiende la vida util de tu vehiculo con el mejor cuidado y servicios prestados</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="d-flex bg-light py-5 px-4">
+                        <i class="fa fa-users-cog fa-3x text-primary flex-shrink-0"></i>
+                        <div class="ps-4">
+                            <h5 class="mb-3">Trabajadores Expertos</h5>
+                            <p>Nuestro equipo de trabajo es certificado y capacitado para dar una mejor atención.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="d-flex py-5 px-4">
+                        <i class="fa fa-tools fa-3x text-primary flex-shrink-0"></i>
+                        <div class="ps-4">
+                            <h5 class="mb-3">Equipo Moderno</h5>
+                            <p>Tecnología de punta</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Service End -->
+
+
+    <!-- About Start -->
+    <div class="container-xxl py-5" id="about">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-6 pt-4" style="min-height: 400px;">
+                    <div class="position-relative h-100 wow fadeIn" data-wow-delay="0.1s">
+                        <img class="position-absolute img-fluid w-100 h-100" src="{% static 'index/img/about.jpg' %}" style="object-fit: cover;" alt="">
+                        <div class="position-absolute top-0 end-0 mt-n4 me-n4 py-4 px-5" style="background: rgba(0, 0, 0, .08);">
+                            <h1 class="display-4 text-white mb-0"> {{ mainpage.experiencia }} <span class="fs-4">Años</span></h1>
+                            <h4 class="text-white">Experiencia</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h6 class="text-primary text-uppercase">// Acerca de Nosotros //</h6>
+                    <h1 class="mb-4"><span class="text-primary">{{ mainpage.name }}</span> Es el mejor lugar para su cuidado del automóvil</h1>
+                    <p class="mb-4">{{ mainpage.desc }}</p>
+                    <div class="row g-4 mb-3 pb-3">
+                        <div class="col-12 wow fadeIn" data-wow-delay="0.1s">
+                            <div class="d-flex">
+                                <div class="bg-light d-flex flex-shrink-0 align-items-center justify-content-center mt-1" style="width: 45px; height: 45px;">
+                                    <span class="fw-bold text-secondary">01</span>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>Misión</h6>
+                                    <span>{{ mainpage.mission }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 wow fadeIn" data-wow-delay="0.3s">
+                            <div class="d-flex">
+                                <div class="bg-light d-flex flex-shrink-0 align-items-center justify-content-center mt-1" style="width: 45px; height: 45px;">
+                                    <span class="fw-bold text-secondary">02</span>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>Visión</h6>
+                                    <span>{{ mainpage.vision }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 wow fadeIn" data-wow-delay="0.5s">
+                            <div class="d-flex">
+                                <div class="bg-light d-flex flex-shrink-0 align-items-center justify-content-center mt-1" style="width: 45px; height: 45px;">
+                                    <span class="fw-bold text-secondary">03</span>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>Quienes somos</h6>
+                                    <span>{{ mainpage.about_us }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About End -->
+
+
+    <!-- Fact Start -->
+    <div class="container-fluid fact bg-dark my-5 py-5" >
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
+                    <i class="fa fa-check fa-2x text-white mb-3"></i>
+                    <h2 class="text-white mb-2" >{{ mainpage.experiencia }}</h2>
+                    <p class="text-white mb-0">Años de Experiencia</p>
+                </div>
+                <div class="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.3s">
+                    <i class="fa fa-users-cog fa-2x text-white mb-3"></i>
+                    <h2 class="text-white mb-2" >8</h2>
+                    <p class="text-white mb-0">Técnicos Expertos</p>
+                </div>
+                <div class="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.5s">
+                    <i class="fa fa-users fa-2x text-white mb-3"></i>
+                    <h2 class="text-white mb-2" >327</h2>
+                    <p class="text-white mb-0">Clientes Satisfechos</p>
+                </div>
+                <div class="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.7s">
+                    <i class="fa fa-car fa-2x text-white mb-3"></i>
+                    <h2 class="text-white mb-2" >725</h2>
+                    <p class="text-white mb-0">Proyectos Completos</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fact End -->
+
+
+    <!-- Service Start -->
+    <div class="container-xxl service py-5" id="servicios">
+        <div class="container">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="text-primary text-uppercase">// Nuestros servicios //</h6>
+                <h1 class="mb-5">Explorar nuestros servicios</h1>
+            </div>
+            <div class="row g-4 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="col-lg-4">
+                    <div class="nav w-100 nav-pills me-4">
+                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-4 active" data-bs-toggle="pill" data-bs-target="#tab-pane-1" type="button">
+                            <i class="fa fa-car-side fa-2x me-3"></i>
+                            <h4 class="m-0">Prueba de Diagnóstico</h4>
+                        </button>
+                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-4" data-bs-toggle="pill" data-bs-target="#tab-pane-2" type="button">
+                            <i class="fa fa-car fa-2x me-3"></i>
+                            <h4 class="m-0">Mantenimiento del Motor</h4>
+                        </button>
+                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-4" data-bs-toggle="pill" data-bs-target="#tab-pane-3" type="button">
+                            <i class="fa fa-cog fa-2x me-3"></i>
+                            <h4 class="m-0">Reemplazo de Llantas</h4>
+                        </button>
+                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-0" data-bs-toggle="pill" data-bs-target="#tab-pane-4" type="button">
+                            <i class="fa fa-oil-can fa-2x me-3"></i>
+                            <h4 class="m-0">Cambio de Aceite</h4>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="tab-content w-100">
+                        <div class="tab-pane fade show active" id="tab-pane-1">
+                            <div class="row g-4">
+                                <div class="col-md-6" style="min-height: 350px;">
+                                    <div class="position-relative h-100">
+                                        <img class="position-absolute img-fluid w-100 h-100" src="{% static 'index/img/service-1.jpg' %}"
+                                            style="object-fit: cover;" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h3 class="mb-3">{{ mainpage.experiencia }} años de experiencia en servicio automotriz garantiza el cuidado de tu vehiculo</h3>
+                                    <p class="mb-4">Las pruebas de diagnóstico del automóvil son esenciales para su seguridad.
+                                    Las pruebas de diagnóstico de automóviles pueden ayudarlo a evitar problemas mecánicos graves, que podría resultar en un accidente, asegurándose de que su automóvil esté funcionando correctamente.</p>
+                                    <p><i class="fa fa-check text-success me-3"></i>Servicio de Calidad</p>
+                                    <p><i class="fa fa-check text-success me-3"></i>Trabajadores Expertos</p>
+                                    <p><i class="fa fa-check text-success me-3"></i>Equipo Moderno</p>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab-pane-2">
+                            <div class="row g-4">
+                                <div class="col-md-6" style="min-height: 350px;">
+                                    <div class="position-relative h-100">
+                                        <img class="position-absolute img-fluid w-100 h-100" src="{% static 'index/img/service-2.jpg' %}"
+                                            style="object-fit: cover;" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h3 class="mb-3">{{ mainpage.experiencia }} años de experiencia en servicio automotriz garantiza el cuidado de tu vehiculo</h3>
+                                    <p class="mb-4">El motor es una de las piezas más importantes del vehículo, sin embargo, su deterioro puede traer consecuencias de manera irremediable.</p>
+                                    <p><i class="fa fa-check text-success me-3"></i>Servicio de Calidad</p>
+                                    <p><i class="fa fa-check text-success me-3"></i>Trabajadores Expertos</p>
+                                    <p><i class="fa fa-check text-success me-3"></i>Equipo Moderno</p>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab-pane-3">
+                            <div class="row g-4">
+                                <div class="col-md-6" style="min-height: 350px;">
+                                    <div class="position-relative h-100">
+                                        <img class="position-absolute img-fluid w-100 h-100" src="{% static 'index/img/service-3.jpg' %}"
+                                            style="object-fit: cover;" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h3 class="mb-3">{{ mainpage.experiencia }} años de experiencia en servicio automotriz garantiza el cuidado de tu vehiculo</h3>
+                                    <p class="mb-4">Circula siempre con los neumáticos a la presión indicada para tu vehículo.</p>
+                                        Realiza rotaciones de llantas frecuentemente, de esta manera el desgaste será más uniforme.</p>
+                                        Revisa el desgaste de los neumáticos constantemente y en diferentes puntos de la banda de rodadura.</p>
+                                    <p><i class="fa fa-check text-success me-3"></i>Servicio de Calidad</p>
+                                    <p><i class="fa fa-check text-success me-3"></i>Trabajadores Expertos</p>
+                                    <p><i class="fa fa-check text-success me-3"></i>Equipo Moderno</p>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab-pane-4">
+                            <div class="row g-4">
+                                <div class="col-md-6" style="min-height: 350px;">
+                                    <div class="position-relative h-100">
+                                        <img class="position-absolute img-fluid w-100 h-100" src="{% static 'index/img/service-4.jpg' %}"
+                                            style="object-fit: cover;" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h3 class="mb-3">{{ mainpage.experiencia }} años de experiencia en servicio automotriz garantiza el cuidado de tu vehiculo</h3>
+                                    <p class="mb-4">Un aceite en mal estado o insuficiente puede provocar una amplia gama de averías, así que la verificación del nivel, su sustitución en los momentos adecuados y el uso de productos de primeras marcas con la viscosidad adecuada es imprescindible en la fidelización del cliente del taller.</p>
+                                    <p><i class="fa fa-check text-success me-3"></i>Servicio de Calidad</p>
+                                    <p><i class="fa fa-check text-success me-3"></i>Trabajadores Expertos</p>
+                                    <p><i class="fa fa-check text-success me-3"></i>Equipo Moderno</p>
+                                 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Service End -->
+
+
+   
+
+
+
+<!-- Team Start -->
+<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s" id="team">
+    <div class="container">
+        <div class="text-center">
+            <h6 class="text-primary text-uppercase">// Nuestro //</h6>
+            <h1 class="mb-5">Equipo de Trabajo</h1>
+        </div>
+        <div class="owl-carousel testimonial-carousel position-relative">
+            {% if team %}
+            {%for a in team%}
+            <div class="testimonial-item text-center">
+                <img class="bg-light rounded-circle p-2 mx-auto mb-3" src=" {{ a.image.url }} " style="width: 80px; height: 80px;">
+                <h5 class="mb-0"> {{ a.names }} </h5>
+                <p> {{ a.job }} </p>
+                <div class="testimonial-text bg-light text-center p-4">
+                <p class="mb-0"> {{ a.desc }} </p>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            
+        </div>
+    </div>
+</div>
+    <!-- Testimonial Start -->
+    <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container">
+            <div class="text-center">
+                <h6 class="text-primary text-uppercase">// Testimonios //</h6>
+                <h1 class="mb-5">Nuestros Clientes</h1>
+            </div>
+            <div class="owl-carousel testimonial-carousel position-relative">
+                {% if testimonials %}
+                {%for a in testimonials%}
+                <div class="testimonial-item text-center">
+                    <img class="bg-light rounded-circle p-2 mx-auto mb-3" src=" {{ a.image.url }} " style="width: 80px; height: 80px;">
+                    <h5 class="mb-0"> {{ a.names }} </h5>
+                    <p> {{ a.job }} </p>
+                    <div class="testimonial-text bg-light text-center p-4">
+                    <p class="mb-0"> {{ a.desc }} </p>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+
+                
+            </div>
+        </div>
+    </div>
+    <!-- Testimonial End -->
+
+ <!-- Booking Start -->
+ <div class="container-fluid bg-secondary booking my-5 wow fadeInUp" data-wow-delay="0.1s" id="contactos">
+    <div class="container">
+        <div class="row gx-5">
+            <div class="col-lg-6 py-5">
+                <div class="py-5">
+                    <h1 class="text-white mb-4">Tu opinion nos importa.</h1>
+                    <p class="text-white mb-0">Queremos saber tu opinión y conocer tus propuestas para mejorar todos nuestros servicios y satisfacer tus necesidades.</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="bg-primary h-100 d-flex flex-column justify-content-center text-center p-5 wow zoomIn" data-wow-delay="0.6s">
+                    <h1 class="text-white mb-4">Cuentanos tu experiencia</h1>
+                    <form action="{% url 'index' %}" id="frmComments" method="post" class="">
+                        {% for field in form.visible_fields %}
+                            <div class="form-group">
+                                <label><b>{{ field.label }}:</b></label>
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+                        <div class="text-center">
+                            <button class="btn btn-primary btnSendCommets" type="submit"><i
+                                    class="fas fa-envelope"></i>
+                                Enviar comentario
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Booking End -->
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-light mb-4">Información</h4>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>{{ mainpage.address }}</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i> {{ mainpage.phone }}</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>{{ mainpage.email }}</p>
+                  
+                </div>
+                <div class="col-lg-3 col-md-6 ">
+                    <h4 class="text-light mb-4">Redes Sociales</h4>
+                    <div class="d-flex pt-2">
+                        {% for i in redes %}
+                        <a class="btn btn-outline-light btn-social" href=" {{ i.url }}  "><i class=" {{ i.icon }} "></i></a>
+                        
+                        {% endfor %}
+                    </div>
+
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-light mb-4">Horario de atención</h4>
+                   
+                    <p class="mb-4"> <i class="fas fa-business-time"></i> {{ mainpage.horary }}</p>
+                   
+                </div>
+               
+                <div class="col-lg-3 col-md-6 ">
+                    <h4 class="text-light ">Servicios</h4>
+                    <a class="btn btn-link " href="{% if onepage %}#servicios{% else %}/#servicios{% endif %}">Servicios</a>
+                    <a class="btn btn-link " href="{% if onepage %}#about{% else %}/#about{% endif %}">Nosotros</a>
+                    <a class="btn btn-link " href="{% if onepage %}#team{% else %}/#team{% endif %}">Team</a>
+                    <a class="btn btn-link " href="{% if onepage %}#contactos{% else %}/#contactos{% endif %}">Contactos</a>
+                </div>
+                
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a class="border-bottom" href="#">{{ mainpage.name }} </a>, All Right Reserved.
+
+                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                        Designed By <a class="border-bottom" href="">Alexander Tipan</a>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <div class="footer-menu">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script src="{% static 'index/lib/wow/wow.min.js' %}"></script>
+    <script src="{% static 'index/lib/easing/easing.min.js' %}"></script>
+    <script src="{% static 'index/lib/waypoints/waypoints.min.js' %}"></script>
+    <script src="{% static 'index/lib/counterup/counterup.min.js' %}"></script>
+    <script src="{% static 'index/lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'index/lib/tempusdominus/js/moment.min.js' %}"></script>
+    <script src="{% static 'index/lib/tempusdominus/js/moment-timezone.min.js' %}"></script>
+    <script src="{% static 'index/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+    <script src="{% static 'mainpage/js/sendcomments.js' %}"></script>
+
+<!-- Sweetalert2-->
+<script src="{% static 'lib/sweetalert2-11.0.16/sweetalert2.all.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'lib/sweetalert2-11.0.16/sweetalert2.min.css' %}"/>
+<script src="{% static 'mainpage/js/main.js' %}"></script>
+<!-- Send Comments-->
+<script src="{% static 'js/functions.js' %}"></script>
+<!--Formvalidation-->
+<link rel="stylesheet" href="{% static 'lib/formvalidation-1.8.0/css/formValidation.min.css' %}">
+<script src="{% static 'lib/formvalidation-1.8.0/es6-shim.min.js' %}"></script>
+<script src="{% static 'lib/formvalidation-1.8.0/js/FormValidation.min.js' %}"></script>
+<script src="{% static 'lib/formvalidation-1.8.0/js/plugins/Bootstrap.min.js' %}"></script>
+<script src="{% static 'lib/formvalidation-1.8.0/js/locales/es_ES.min.js' %}"></script>
+<!-- Jquery-Confirm-->
+<script src="{% static 'lib/jquery-confirm-3.3.4/jquery-confirm.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'lib/jquery-confirm-3.3.4/jquery-confirm.min.css' %}"/>
+
+    <!-- Template Javascript -->
+    <script src="{% static 'index/js/main.js' %}"></script>
+</body>
+
+</html>

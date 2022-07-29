@@ -1,0 +1,38 @@
+{% extends 'list.html' %}
+{% load static %}
+{% block columns %}
+    <th class="text-center">Nro</th>
+    <th>Nombres</th>
+    <th>Cargo</th>
+    <th>Descripción</th>
+    <th>Imagen</th>
+    
+    <th class="text-center"><i class="fas fa-wrench"></i></th>
+{% endblock %}
+
+{% block rows %}
+    {% for i in object_list %}
+        <tr>
+            <td>{{ i.id }}</td>
+            <td>{{ i.names }}</td>
+
+            <td>{{ i.job }}</td>
+            <td>{{ i.desc }}</td>
+            <td class="text-center" >
+                {% if i.image %}
+                <img src=" {{i.image.url}} " class="img-fluid" alt="" width="200px" height="200px" >
+                {% endif %}
+            </td>
+            <td class="text-center">
+                <a href="{% url 'team_update' i.id %}" data-toggle="tooltip" title="Editar registro"
+                   class="btn btn-warning btn-xs btn-flat">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="{% url 'team_delete' i.id %}" rel="delete" data-toggle="tooltip" title="Eliminar registro"
+                   class="btn btn-danger btn-xs btn-flat">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+{% endblock %}

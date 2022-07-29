@@ -1,0 +1,28 @@
+{% extends 'list.html' %}
+
+{% block columns %}
+    <th class="text-center">Nro</th>
+    <th>Nombres</th>
+    <th>Teléfono</th>
+    <th>Email</th>
+    <th>Mensaje</th>
+    <th class="text-center"><i class="fa fa-wrench"></i></th>
+{% endblock %}
+
+{% block rows %}
+    {% for i in object_list %}
+        <tr>
+            <td>{{ i.id }}</td>
+            <td>{{ i.names }}</td>
+            <td>{{ i.email }}</td>
+            <td>{{ i.mobile }}</td>
+            <td>{{ i.message }}</td>
+            <td class="text-center">
+                <a href="{% url 'comments_delete' i.id %}" rel="delete" data-toggle="tooltip" title="Eliminar registro"
+                   class="btn btn-danger btn-xs btn-flat">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+{% endblock %}

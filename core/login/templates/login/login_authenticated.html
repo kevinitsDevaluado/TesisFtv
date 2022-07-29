@@ -1,0 +1,38 @@
+{% extends 'mainpage/index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block javascript %}
+
+{% endblock %}
+
+{% block content %}
+    <section id="login">
+        <div class="row justify-content-center">
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Sesión Activa</h4>
+                    </div>
+                    <div class="card-body">
+                        <input type="hidden" name="next" value="{{ next }}">
+                        <img src="{{ request.user.get_image }}" class="img-fluid d-block mx-auto img-user img-thumbnail img-rounded" alt="User Image">
+                        <br>
+                        <p class="text-center">
+                            <b>¿{{ request.user.get_full_name }} tienes una sesión activa, deseas continuar la
+                                sesión?</b>
+                        </p>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="{% url 'dashboard' %}" class="btn btn-primary btn-flat">
+                            <i class="fas fa-check"></i> Si
+                        </a>
+                        <a href="{% url 'login_different' %}" class="btn btn-danger btn-flat" style="color: white;">
+                            <i class="fas fa-times"></i> No
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% include 'mainpage/footer.html' %}
+{% endblock %}

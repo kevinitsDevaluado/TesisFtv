@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+
+        body {
+            font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif;
+            padding: 0;
+            margin: 0;
+            color: black;
+        }
+
+        .name-company {
+            font-size: 30px;
+            padding: 0;
+            margin: 0;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        table {
+            color: black;
+        }
+
+        table thead tr th {
+            border: 1px solid black !important;
+            padding: 3px;
+        }
+
+        table tbody tr td {
+            border: 1px solid black;
+            padding: 3px;
+        }
+
+        .img-logo {
+            margin-top: 10px;
+            width: 75px;
+            height: 75px;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <img src="{{ company.get_icon_image }}" class="img-fluid d-block mx-auto" width="200px" height="200px">
+    <h1 class="name-company">{{ company.name }}</h1>
+    <p class="text-center">
+        {{ company.address }}<br>
+        Ruc: {{ company.ruc }}
+        Celular: +593 {{ company.mobile }}<br>
+        Teléfono: {{ company.phone }}<br>
+        Email: {{ company.email }}<br>
+    </p>
+    <table style="width: 100%">
+        <tr>
+            <td><b>Factura</b></td>
+            <td>{{ sale.nro }}</td>
+            <td><b>Mecanico</b></td>
+            <td>{{ sale.employee.user.get_full_name | upper }}</td>
+        </tr>
+        <tr>
+            <td><b>Fecha de registro</b></td>
+            <td>{{ sale.date_joined|date:'c' }}</td>
+            <td><b>Tipo</b></td>
+            <td>Agendamiento</td>
+        </tr>
+        <tr>
+            <td><b>Cliente</b></td>
+            <td>{{ sale.mascot.client.user.get_full_name }}</td>
+            <td><b>Vehiculo</b></td>
+            <td>{{ sale.mascot.name | upper }}</td>
+        </tr>
+       
+        <tr>
+            <td><b>Total a pagar</b></td>
+            <td>{{ sale.total|floatformat:2 }}</td>
+            <td><b>Estado</b></td>
+            <td>{{ sale.get_status_display| upper }}</td>
+        </tr>
+    </table>
+    <br>
+    {% if sale.type == 'cita_medica' or sale.type == 'control_vacuna' or sale.type == 'control_antiparasitario' %}
+        <table class="table" style="width: 100%;" hidden="true">
+            <thead>
+            <tr>
+                <th colspan="4" class="text-center text-uppercase font-weight-bold">
+                    Historial del Vehiculo
+                </th>
+            </tr>
+            <tr style="border: 1px solid black;">
+                <th style="width: 10%;">Nro</th>
+                <th style="width: 20%;">Nombre</th>
+                <th style="width: 20%;">Valor</th>
+                <th style="width: 50%;">Descripción</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for det in sale.historialmedical_set.all %}
+                <tr>
+                    <td class="text-center">{{ forloop.counter }}</td>
+                    <td>{{ det.medical_parameters.name | upper }}</td>
+                    <td>{{ det.valor }}</td>
+                    <td class="text-center">{{ det.desc | upper }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <br>
+    {% endif %}
+    <table class="table" style="width: 100%;">
+        <thead>
+        <tr>
+            <th colspan="4" class="text-center text-uppercase font-weight-bold">
+                Detalle de Productos
+            </th>
+        </tr>
+        <tr style="border: 1px solid black;">
+            <th style="width: 10%;">Cantidad</th>
+            <th style="width: 60%;">Producto</th>
+            <th style="width: 15%;">Precio Unitario</th>
+            <th style="width: 15%;" class="text-right">Subtotal</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for det in sale.saleproducts_set.all %}
+            <tr>
+                <td class="text-center">{{ det.cant }}</td>
+                <td>{{ det.product.name | upper }}</td>
+                <td class="text-center">{{ det.price|floatformat:2 }}</td>
+                <td class="text-right">{{ det.subtotal|floatformat:2 }}</td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="3" class="text-right"><b>Subtotal</b></td>
+            <td class="text-right">{{ sale.subtotal|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <td colspan="3" class="text-right"><b>Iva {{ sale.iva|floatformat:2 }}%</b></td>
+            <td class="text-right">{{ sale.total_iva|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <td colspan="3" class="text-right"><b>Total a pagar</b></td>
+            <td class="text-right">{{ sale.total|floatformat:2 }}</td>
+        </tr>
+        {% if sale.type == 'cita_medica' %}
+            <tr>
+                <td colspan="5" style="padding: 10px 20px;">
+                    <p>
+                        <b>Motivos:</b><br>
+                        {{ sale.symptoms }}<br><br>
+                        <b>Observación:</b><br>
+                        {{ sale.observation }}<br><br>
+                        <b>Diagnóstico:</b><br>
+                        {{ sale.diagnosis }}
+                    </p>
+                </td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

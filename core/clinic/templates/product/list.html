@@ -1,0 +1,39 @@
+{% extends 'list.html' %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static 'lib/select2-4.0.13/js/select2.min.js' %}"></script>
+    <script src="{% static 'lib/select2-4.0.13/js/i18n/es.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/select2-4.0.13/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/select2-4.0.13/css/select2-bootstrap4.min.css' %}">
+    <script src="{% static 'product/js/list.js' %}"></script>
+{% endblock %}
+
+{% block columns %}
+    <th class="text-center">Nro</th>
+    <th>Nombre</th>
+    <th>Tipo de Producto</th>
+    <th>Imagen</th>
+    <th>Precio Unitario</th>
+    <th>Stock</th>
+    <th class="text-center">Opciones</th>
+{% endblock %}
+
+{% block rows %}
+
+{% endblock %}
+
+{% block javascript_list %}
+
+{% endblock %}
+
+{% block content_list_before %}
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label>Tipo de Producto:</label>
+                {{ form.product_type }}
+            </div>
+        </div>
+    </div>
+    <hr>
+{% endblock %}

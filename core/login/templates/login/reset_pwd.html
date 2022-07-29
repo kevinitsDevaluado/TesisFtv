@@ -1,0 +1,54 @@
+{% extends 'mainpage/index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block javascript %}
+    <script src="{% static 'mainpage/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'mainpage/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'mainpage/vendor/jquery.easing/jquery.easing.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/formvalidation-1.8.0/css/formValidation.min.css' %}">
+    <script src="{% static 'lib/formvalidation-1.8.0/js/es6-shim.min.js' %}"></script>
+    <script src="{% static 'lib/formvalidation-1.8.0/js/FormValidation.min.js' %}"></script>
+    <script src="{% static 'lib/formvalidation-1.8.0/js/plugins/Bootstrap.min.js' %}"></script>
+    <script src="{% static 'lib/formvalidation-1.8.0/js/locales/es_ES.min.js' %}"></script>
+    <script src="{% static 'lib/jquery-confirm-3.3.4/jquery-confirm.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/jquery-confirm-3.3.4/jquery-confirm.min.css' %}"/>
+    <script src="{% static 'lib/sweetalert2-11.0.16/sweetalert2.all.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/sweetalert2-11.0.16/sweetalert2.min.css' %}"/>
+    <script src="{% static 'js/functions.js' %}"></script>
+    <script src="{% static 'login/js/reset_pwd.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <section id="login">
+        <div class="row justify-content-center">
+            <div class="col-lg-4">
+                <form method="post" id="frmResetPassword" data-url="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Reseteo de Password</h4>
+                        </div>
+                        <div class="card-body">
+                            <input type="hidden" name="next" value="{{ next }}">
+                            <div class="form-group">
+                                <label><b>Número de cedula:</b></label>
+                                {{ form.dni }}
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary btn-block btn-flat">
+                                <i class="fas fa-envelope" aria-hidden="true"></i> Enviar
+                            </button>
+                            <hr>
+                            <p class="mt-3 text-center desc">
+                                Se te enviara un correo electrónico con los pasos necesarios para poder resetear tu
+                                password
+                            </p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    {% include 'mainpage/footer.html' %}
+{% endblock %}

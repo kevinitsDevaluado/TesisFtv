@@ -1,0 +1,463 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>{{ title }}</title>
+    <meta content="" name="descriptison">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="{{ mainpage.get_icon_image }}" rel="icon">
+    <link href="{{ mainpage.get_icon_image }}" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'mainpage/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'lib/fontawesome-5.15.3/css/all.min.css' %}"/>
+    <link href="{% static 'mainpage/vendor/icofont/icofont.min.css' %}" rel="stylesheet">
+    <link href="{% static 'mainpage/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'mainpage/vendor/venobox/venobox.css' %}" rel="stylesheet">
+    <link href="{% static 'mainpage/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'mainpage/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+    <link href="{% static 'mainpage/vendor/owl.carousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'mainpage/vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="{% static 'mainpage/css/style.css' %}" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- ======= Top Bar ======= -->
+<div id="topbar" class="d-none d-lg-flex align-items-center fixed-top">
+    <div class="container d-flex">
+        <div class="contact-info mr-auto">
+            <i class="icofont-envelope"></i> <a href="mailto:contact@example.com">{{ mainpage.email }}</a>
+            <i class="icofont-phone"></i> +593 {{ mainpage.mobile }} / {{ mainpage.phone }}
+            <i class="icofont-google-map"></i> {{ mainpage.address }}
+        </div>
+        <div class="social-links">
+            {% for s in socialnetworks %}
+                <a href="{{ s.url }}" class="{{ s.css }}"><i class="{{ s.icon }}"></i></a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% include 'mainpage/header.html' %}
+
+{% block content %}
+    <!-- ======= Hero Section ======= -->
+    <section id="hero" class="d-flex align-items-center">
+        <div class="container">
+            <h1>{{ mainpage.name }}</h1>
+            <h2>Nosotros proporcionamos servicios veterinarios integrales de la más alta calidad.</h2>
+            <a href="{% url 'signin' %}" class="btn-get-started scrollto">Registrarse</a>
+        </div>
+    </section>
+    <!-- End Hero -->
+
+    <!-- ======= Main ======= -->
+    <main id="main">
+
+        <!-- ======= Why Us Section ======= -->
+        <section id="why-us" class="why-us">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-lg-4 d-flex align-items-stretch">
+                        <div class="content">
+                            <h3>¿Porque estar con nosotros?</h3>
+                            <p>
+                                {{ mainpage.with_us }}
+                            </p>
+                            {#                        <div class="text-center">#}
+                            {#                            <a href="#" class="more-btn">Learn More <i class="bx bx-chevron-right"></i></a>#}
+                            {#                        </div>#}
+                        </div>
+                    </div>
+                    <div class="col-lg-8 d-flex align-items-stretch">
+                        <div class="icon-boxes d-flex flex-column justify-content-center">
+                            <div class="row">
+                                {% for q in qualities %}
+                                    <div class="col-xl-4 d-flex align-items-stretch">
+                                        <div class="icon-box mt-4 mt-xl-0">
+                                            <img src="{{ q.get_image }}" class="img-fluid d-block mx-auto">
+                                            <h4>{{ q.name }}</h4>
+                                            <p>{{ q.desc }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div><!-- End .content-->
+                    </div>
+                </div>
+
+            </div>
+        </section><!-- End Why Us Section -->
+
+        <!-- ======= About Section ======= -->
+        <section id="about" class="about">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-xl-5 col-lg-6 video-box d-flex justify-content-center align-items-stretch">
+                        <a href="{{ mainpage.about_youtube }}" class="venobox play-btn mb-4"
+                           data-vbtype="video" data-autoplay="true"></a>
+                    </div>
+
+                    <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5">
+                        <h3>Somos una familia en {{ mainpage.name }}</h3>
+                        <p>{{ mainpage.desc }}</p>
+
+                        <div class="icon-box">
+                            <div class="icon"><i class="bx bx-fingerprint"></i></div>
+                            <h4 class="title"><a href="">Misión</a></h4>
+                            <p class="description">{{ mainpage.mission }}</p>
+                        </div>
+
+                        <div class="icon-box">
+                            <div class="icon"><i class="bx bx-gift"></i></div>
+                            <h4 class="title"><a href="">Visión</a></h4>
+                            <p class="description">{{ mainpage.vision }}</p>
+                        </div>
+
+                        <div class="icon-box">
+                            <div class="icon"><i class="bx bx-atom"></i></div>
+                            <h4 class="title"><a href="">Quienes somos</a></h4>
+                            <p class="description">{{ mainpage.about_us }}</p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section><!-- End About Section -->
+
+        <!-- ======= Counts Section ======= -->
+        <section id="counts" class="counts">
+            <div class="container">
+                <div class="row">
+                    {% for s in statistics %}
+                        <div class="col-lg-3 col-md-6">
+                            <div class="count-box">
+                                <img src="{{ s.get_image }}" class="img-fluid d-block mx-auto">
+                                <span data-toggle="counter-up">{{ s.cant }}</span>
+                                <p>{{ s.name }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section><!-- End Counts Section -->
+
+        <!-- ======= Services Section ======= -->
+        <section id="services" class="services">
+            <div class="container">
+
+                <div class="section-title">
+                    <h2>Servicios</h2>
+                    <p></p>
+                </div>
+
+                <div class="row">
+                    {% for s in services %}
+                        <div class="col-lg-4 col-md-6 d-flex align-items-stretch mb-3">
+                            <div class="icon-box">
+                                <img src="{{ s.get_image }}" class="img-fluid d-block mx-auto">
+                                <h4><a href="">{{ s.name }}</a></h4>
+                                <p>{{ s.desc }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </section><!-- End Services Section -->
+
+        <!-- ======= Departments Section ======= -->
+        <section id="departments" class="departments">
+            <div class="container">
+
+                <div class="section-title">
+                    <h2>Departamentos</h2>
+                    <p></p>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-3">
+                        <ul class="nav nav-tabs flex-column">
+                            {% for dep in departments %}
+                                <li class="nav-item">
+                                    <a class="nav-link{% if forloop.first %} active show{% endif %}" data-toggle="tab"
+                                       href="#tab-{{ forloop.counter }}">{{ dep.name }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col-lg-9 mt-4 mt-lg-0">
+                        <div class="tab-content">
+                            {% for dep in departments %}
+                                <div class="tab-pane{% if forloop.first %} active show{% endif %}"
+                                     id="tab-{{ forloop.counter }}">
+                                    <div class="row">
+                                        <div class="col-lg-8 details order-2 order-lg-1">
+                                            <h3>{{ dep.name }}</h3>
+                                            <p class="font-italic">{{ dep.title }}</p>
+                                            <p>{{ dep.desc }}</p>
+                                        </div>
+                                        <div class="col-lg-4 text-center order-1 order-lg-2">
+                                            <img src="{{ dep.get_image }}" alt=""
+                                                 class="img-fluid img-thumbnail d-block mx-auto">
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section><!-- End Departments Section -->
+
+        <!-- ======= Doctors Section ======= -->
+        <section id="doctors" class="doctors">
+            <div class="container">
+
+                <div class="section-title">
+                    <h2>Doctores</h2>
+                    <p></p>
+                </div>
+
+                <div class="row">
+                    {% for t in team %}
+                        <div class="col-lg-6">
+                            <div class="member d-flex align-items-start">
+                                <div class="pic">
+                                    <img src="{{ t.get_image }}" class="img-fluid" alt="">
+                                </div>
+                                <div class="member-info">
+                                    <h4>{{ t.names }}</h4>
+                                    <span>{{ t.job }}</span>
+                                    <p>{{ t.phrase }}</p>
+                                    <div class="social">
+                                        {% for det in t.teamsocialnet_set.all %}
+                                            <a href="{{ det.url }}"><i class="{{ det.icon }}"></i></a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </section><!-- End Doctors Section -->
+
+        <!-- ======= Frequently Asked Questions Section ======= -->
+        <section id="faq" class="faq section-bg">
+            <div class="container">
+
+                <div class="section-title">
+                    <h2>Preguntas frecuentes</h2>
+                    <p></p>
+                </div>
+
+                <div class="faq-list">
+                    <ul>
+                        {% for f in feqQuestions %}
+                            <li data-aos="fade-up" data-aos-delay="{{ forloop.counter }}00">
+                                <i class="bx bx-help-circle icon-help"></i> <a data-toggle="collapse" class="collapse"
+                                                                               href="#faq-list-{{ forloop.counter }}">{{ f.question }}
+                                <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+                                <div id="faq-list-{{ forloop.counter }}"
+                                     class="collapse{% if forloop.first %} show{% endif %}" data-parent=".faq-list">
+                                    <p>{{ f.answer }}</p>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            </div>
+        </section><!-- End Frequently Asked Questions Section -->
+
+        <!-- ======= Testimonials Section ======= -->
+        <section id="testimonials" class="testimonials">
+            <div class="container">
+
+                <div class="owl-carousel testimonials-carousel">
+                    {% for t in testimonials %}
+                        <div class="testimonial-wrap">
+                            <div class="testimonial-item">
+                                <img src="{{ t.get_image }}"
+                                     class="testimonial-img"
+                                     alt="">
+                                <h3>{{ t.names }}</h3>
+                                <h4>{{ t.job }}</h4>
+                                <p>
+                                    <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                                    {{ t.desc }}
+                                    <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                                </p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </section><!-- End Testimonials Section -->
+
+        <!-- ======= Gallery Section ======= -->
+        <section id="gallery" class="gallery">
+            <div class="container">
+
+                <div class="section-title">
+                    <h2>Galería</h2>
+                    <p></p>
+                </div>
+            </div>
+
+            <div class="container-fluid">
+                <div class="row no-gutters">
+                    {% for g in gallery %}
+                        <div class="col-lg-3 col-md-4">
+                            <div class="gallery-item">
+                                <a href="{{ g.get_image }}" class="venobox"
+                                   data-gall="gallery-item">
+                                    <img src="{{ g.get_image }}" alt="" class="img-fluid">
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </section><!-- End Gallery Section -->
+
+        <!-- ======= Contact Section ======= -->
+        <section id="contact" class="contact">
+            <div class="container">
+
+                <div class="section-title">
+                    <h2>Contactos</h2>
+                    <p></p>
+                </div>
+            </div>
+
+            <div>
+                <div id="map"></div>
+                <script src="https://maps.googleapis.com/maps/api/js?key={{ keygooglemaps }}"></script>
+            </div>
+
+            <div class="container">
+                <div class="row mt-5">
+
+                    <div class="col-lg-12 col-md-6">
+
+                        <form action="{% url 'index' %}" id="frmComments" method="post" class="">
+                            {% for field in form.visible_fields %}
+                                <div class="form-group">
+                                    <label><b>{{ field.label }}:</b></label>
+                                    {{ field }}
+                                </div>
+                            {% endfor %}
+                            <div class="text-center">
+                                <button class="btn btn-primary btnSendCommets" type="submit"><i
+                                        class="fas fa-envelope"></i>
+                                    Enviar comentario
+                                </button>
+                            </div>
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section><!-- End Contact Section -->
+
+    </main>
+    <!-- End #main -->
+
+    <div id="preloader"></div>
+    <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+    <a href="https://wa.me/593{{ mainpage.mobile }}"
+       target="_blank" class="phone-whatsapp" data-toggle="tooltip"
+       title="Para cualquier pregunta puedes contactarme !!">
+        <i class="fab fa-whatsapp fa-2x"></i>
+    </a>
+
+    {% include 'mainpage/footer.html' %}
+
+    <!-- Vendor JS Files -->
+    <script src="{% static 'mainpage/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'mainpage/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'mainpage/vendor/jquery.easing/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'mainpage/vendor/venobox/venobox.min.js' %}"></script>
+    <script src="{% static 'mainpage/vendor/waypoints/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'mainpage/vendor/counterup/counterup.min.js' %}"></script>
+    <script src="{% static 'mainpage/vendor/owl.carousel/owl.carousel.min.js' %}"></script>
+    <!--Formvalidation-->
+    <link rel="stylesheet" href="{% static 'lib/formvalidation-1.8.0/css/formValidation.min.css' %}">
+    <script src="{% static 'lib/formvalidation-1.8.0/es6-shim.min.js' %}"></script>
+    <script src="{% static 'lib/formvalidation-1.8.0/js/FormValidation.min.js' %}"></script>
+    <script src="{% static 'lib/formvalidation-1.8.0/js/plugins/Bootstrap.min.js' %}"></script>
+    <script src="{% static 'lib/formvalidation-1.8.0/js/locales/es_ES.min.js' %}"></script>
+    <!-- Jquery-Confirm-->
+    <script src="{% static 'lib/jquery-confirm-3.3.4/jquery-confirm.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/jquery-confirm-3.3.4/jquery-confirm.min.css' %}"/>
+    <!-- Sweetalert2-->
+    <script src="{% static 'lib/sweetalert2-11.0.16/sweetalert2.all.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/sweetalert2-11.0.16/sweetalert2.min.css' %}"/>
+    <script src="{% static 'mainpage/js/main.js' %}"></script>
+    <!-- Send Comments-->
+    <script src="{% static 'js/functions.js' %}"></script>
+    <script src="{% static 'mainpage/js/sendcomments.js' %}"></script>
+    <script>
+        function initMap() {
+            var latitude = {{ mainpage.get_latitude }};
+            var longitude = {{ mainpage.get_longitude }};
+            const myLatLng = {
+                lat: latitude, lng: longitude
+            }
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 16,
+                center: myLatLng
+            });
+
+            const marker = new google.maps.Marker({
+                position: myLatLng,
+                map,
+                title: "Hello World!"
+            });
+
+            const infowindow = new google.maps.InfoWindow({
+                content: '<p>' + "{{ mainpage.name }}" + '</p>'
+            });
+
+            marker.addListener("click", () => {
+                infowindow.open(map, marker);
+            });
+
+        }
+
+        $(function () {
+            initMap();
+        })
+
+    </script>
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}
+</body>
+</html>

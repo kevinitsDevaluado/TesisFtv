@@ -1,0 +1,41 @@
+{% extends 'list.html' %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static 'lib/select2-4.0.13/js/select2.min.js' %}"></script>
+    <script src="{% static 'lib/select2-4.0.13/js/i18n/es.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/select2-4.0.13/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/select2-4.0.13/css/select2-bootstrap4.min.css' %}">
+    <script src="{% static 'historialmedical/admin/js/list.js' %}"></script>
+{% endblock %}
+
+{% block columns %}
+    <tr>
+        <th>Fecha de Registro</th>
+        <th>Vehiculo</th>
+        <th>Cliente</th>
+        <th>Mecanico</th>
+        <th>Historial</th>
+    </tr>
+{% endblock %}
+
+{% block javascript_list %}
+
+{% endblock %}
+
+{% block content_list_before %}
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label>Vehiclo:</label>
+                {{ form.mascots }}
+            </div>
+        </div>
+        <div class="col-lg-3" hidden="true">
+            <div class="form-group">
+                <label>Tipo:</label>
+                {{ form.type_medicalhistory }}
+            </div>
+        </div>
+    </div>
+    <hr>
+{% endblock %}

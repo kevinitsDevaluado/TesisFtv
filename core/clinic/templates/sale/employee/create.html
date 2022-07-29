@@ -1,0 +1,345 @@
+{% extends 'form.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block head_form %}
+    <script src="{% static 'lib/select2-4.0.13/js/select2.min.js' %}"></script>
+    <script src="{% static 'lib/select2-4.0.13/js/i18n/es.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/select2-4.0.13/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/select2-4.0.13/css/select2-bootstrap4.min.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/bootstrap-touchspin-4.2.5/css/jquery.bootstrap-touchspin.css' %}"/>
+    <script src="{% static 'lib/bootstrap-touchspin-4.2.5/js/jquery.bootstrap-touchspin.js' %}"></script>
+    <script src="{% static 'lib/tempusdominus-bootstrap-4.5.37.0/js/tempusdominus-bootstrap.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/tempusdominus-bootstrap-4.5.37.0/css/tempusdominus-bootstrap.css' %}"/>
+    <script src="{% static 'sale/employee/js/form.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <form class="form" method="post" action=".." enctype="multipart/form-data" id="frmSale"
+          data-url="{{ list_url }}">
+        <div class="card {{ dshboard.card }}">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa fa-car"></i>
+                    {{ title }}
+                </h3>
+            </div>
+            <div class="card-body" style="display: block;">
+                <div class="container-fluid">
+                    {% csrf_token %}
+                    <input type="hidden" id="action" name="action" value="{{ action }}">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Fecha de registro:</label>
+                                {{ form.date_joined }}
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Tipo de Venta:</label>
+                                {{ form.type }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#home">
+                                        Datos Revisión <i class="fa"></i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#menu1">
+                                        Detalle de Productos
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane container-fluid active" id="home">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label>Cliente / Automóvil:</label>
+                                                <div class="input-group input-group-search">
+                                                    {{ form.mascot }}
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-primary dropdown-toggle" type="button"
+                                                                data-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false"><i class="fas fa-tasks"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu dropdown-menu-right"
+                                                             style="cursor: pointer;">
+                                                            <a class="dropdown-item btnAddMascot">
+                                                                <i class="fas fa-user-plus"></i> Crear Vehículo
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Descripción:</label>
+                                        {{ form.observation }}
+                                    </div>
+                                    <div class="form-group fgrpmedical">
+                                        <label>Motivo:</label>
+                                        {{ form.symptoms }}
+                                    </div>
+                                    <div class="form-group fgrpmedical">
+                                        <label>Diagnóstico:</label>
+                                        {{ form.diagnosis }}
+                                    </div>
+                                </div>
+                                <div class="tab-pane container-fluid fade" id="menu1">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label>Búsqueda de Productos:</label>
+                                                <div class="input-group input-group-search">
+                                                    <input type="text" class="form-control" autocomplete="off"
+                                                           name="searchproducts"
+                                                           placeholder="Ingrese el nombre de un producto">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-primary dropdown-toggle" type="button"
+                                                                data-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false"><i class="fas fa-tasks"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu dropdown-menu-right"
+                                                             style="cursor: pointer;">
+                                                            <a class="dropdown-item btnSearchProducts"><i
+                                                                    class="fas fa-search"></i> Buscar
+                                                                productos</a>
+                                                            <a class="dropdown-item btnClearProducts"><i
+                                                                    class="fas fa-times"></i> Limpiar
+                                                                búsqueda</a>
+                                                            <a class="dropdown-item btnRemoveAllProducts"><i
+                                                                    class="fas fa-trash-alt"></i>
+                                                                Borrar todo</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table width="100%" class="table table-bordered table-striped display nowrap"
+                                           id="tblProducts">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 5%;">Eliminar</th>
+                                            <th style="width: 20%;">Producto</th>
+                                            <th style="width: 15%;">Tipo de Producto</th>
+                                            <th style="width: 10%;">Stock</th>
+                                            <th style="width: 15%;">Cantidad</th>
+                                            <th style="width: 20%;">Precio Unitario</th>
+                                            <th style="width: 15%;">Subtotal</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane container-fluid fade" id="menu2">
+                                    <br>
+                                    <table width="100%" class="table table-bordered table-striped display nowrap"
+                                           id="tblMedicalParameters">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 20%;">Parámetro</th>
+                                            <th style="width: 15%;">Último Valor</th>
+                                            <th style="width: 15%;">Valor</th>
+                                            <th style="width: 50%;">Observación</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row d-flex flex-row-reverse">
+                        <div class="col-lg-3">
+                            <table class="table table-bordered table-sm">
+                                <tbody>
+                                <tr>
+                                    <td><b>SUBTOTAL</b></td>
+                                    <td>{{ form.subtotal }}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>IVA %</b></td>
+                                    <td>{{ form.iva }}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>VALOR IVA</b></td>
+                                    <td>{{ form.total_iva }}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>TOTAL A PAGAR</b></td>
+                                    <td>{{ form.total }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary btn-flat">
+                    <i class="fas fa-save"></i> Guardar registro
+                </button>
+                <a href="{{ list_url }}" class="btn btn-danger btn-flat">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+            </div>
+        </div>
+    </form>
+    <div id="myModalSearchProducts" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <b><i class="fa fa-search" aria-hidden="true"></i> Búsqueda de productos</b>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <table width="100%" class="table table-bordered table-striped display nowrap"
+                               id="tblSearchProducts">
+                            <thead>
+                            <tr>
+                                <th style="width: 20%;">Nombre</th>
+                                <th style="width: 20%;">Tipo de Producto</th>
+                                <th style="width: 20%;">Precio Unitario</th>
+                                <th style="width: 20%;">Stock</th>
+                                <th style="width: 20%;">Agregar</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="myModalMascot" class="modal fade" role="dialog">
+        <form id="frmMascot" method="post" enctype="multipart/form-data">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            <b><i class="fas fa-user-plus"></i> Nuevo registro de un Cliente/Vehículo</b>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <h5><b>Datos del Cliente</b></h5>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Nombres:</label>
+                                        {{ clientForm.first_name }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Apellidos:</label>
+                                        {{ clientForm.last_name }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Número de cedula:</label>
+                                        <div class="input-group">
+                                            {{ clientForm.dni }}
+                                            <div class="input-group-append">
+                                                <a class="btn btn-success btnClearClient btn-flat">
+                                                    <i class="fas fa-sync-alt"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Email:</label>
+                                        {{ clientForm.email }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Teléfono celular:</label>
+                                        {{ clientForm.mobile }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Dirección</label>
+                                        {{ clientForm.address }}
+                                    </div>
+                                </div>
+                            </div>
+                            <h5><b>Datos de la Mascota</b></h5>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Nombre:</label>
+                                        {{ mascotsForm.name|add_class:'form-control'|attr:'autocomplete:off' }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Color:</label>
+                                        {{ mascotsForm.color|add_class:'form-control'|attr:'autocomplete:off' }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Raza:</label>
+                                        {{ mascotsForm.breed|add_class:'form-control'|attr:'autocomplete:off' }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Genero:</label>
+                                        {{ mascotsForm.gender|add_class:'form-control'|attr:'autocomplete:off' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">
+                            <i class="fas fa-save"></i> Guardar Registro
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script type="application/javascript">
+        var iva = 0.00;
+        $(function () {
+            iva = parseFloat({{ iva }});
+            vents.list_products();
+        });
+    </script>
+{% endblock %}
